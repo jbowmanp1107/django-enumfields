@@ -65,6 +65,8 @@ class EnumFieldMixin(object):
         if value is None:
             return None
         if isinstance(value, self.enum):  # Already the correct type -- fast path
+            if isinstance(value.value, tuple):
+                return str(value.value)
             return value.value
         return self.enum(value).value
 
