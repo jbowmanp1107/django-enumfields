@@ -57,8 +57,14 @@ class EnumFieldMixin(object):
         for m in self.enum:
             if value == m:
                 return m
-            if value == m.value or str(value) == str(m.value) or str(value) == str(m) or (value,) == m.value:
+            if value == m.value or str(value) == str(m.value) or str(value) == str(m):
                 return m
+            try:
+                if (int(value),) == m.value:
+                    return m
+            except:
+                pass
+                # Swollow this, it wasn't a valid int
         raise ValidationError('%s is not a valid value for enum %s' % (value, self.enum), code="invalid_enum_value")
 
     def get_prep_value(self, value):
